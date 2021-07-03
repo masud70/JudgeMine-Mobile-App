@@ -1,33 +1,35 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet, FlatList, TouchableOpacity,SafeAreaView } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import React, { Component, useState } from 'react'
+import { Text, View, StyleSheet, FlatList, TouchableOpacity,SafeAreaView, Button } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-export default class UpcommingContestHome extends Component {
-    constructor(){
-        super();
-        this.state={
-            contests:[
-                {name: "JudgeMine Regular Contest - 01", link: require('../screens/ContestsScreen')},
-                {name: "JudgeMine Regular Contest - 02", link: require('../screens/ContestsScreen')},
-                {name: "JudgeMine Regular Contest - 03", link: require('../screens/ContestsScreen')},
-            ]
-        }
-    }
-    render() {
-        return (
-            <SafeAreaView style={st.mainView}>
-                <Text style={st.heading}>Upcomming Contests</Text>
-                <FlatList
-                    data={this.state.contests}
-                    keyExtractor={item => item.name}
-                    renderItem={({ item }) => (
+
+export default function UpcommingContestHome ({props}) {
+    const navigation = useNavigation();
+    const [Item, setItem] = useState([
+        {name: "JudgeMine Regular Contest - 01", link: '../screens/ContestsScreen'},
+        {name: "JudgeMine Regular Contest - 02", link: '../screens/ContestsScreen'},
+        {name: "JudgeMine Regular Contest - 03", link: '../screens/ContestsScreen'},
+    ])
+
+    return (
+        <SafeAreaView style={st.mainView}>
+            <Text style={st.heading}>Upcomming Contests</Text>
+            <FlatList
+                data={Item}
+                keyExtractor={item => item.name}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={()=> navigation.navigate('Contests')}>
                         <View style={st.item}> 
                             <Text style={{fontSize: 20, textAlign: 'center'}}>{item.name}</Text>
                         </View>
-                    )}
-                />
-            </SafeAreaView>
-        )
-    }
+                    </TouchableOpacity>
+                )}
+            />
+        </SafeAreaView>
+    )
 }
 
 const st = StyleSheet.create({
@@ -52,7 +54,7 @@ const st = StyleSheet.create({
     },
     item:{
         marginBottom: 2,
-        padding: 5,
+        padding: 10,
         width: 370,
         borderBottomWidth: 1,
         borderBottomColor: '#d6d6d6'

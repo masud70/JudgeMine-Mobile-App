@@ -1,48 +1,37 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
+import  React, {useState} from 'react';
+import { SafeAreaView, View, Text, Button } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
 import ProblemsScreen from './screens/ProblemsScreen';
 import ContestsScreen from './screens/ContestsScreen';
 import BlogsScreen from './screens/BlogsScreen.js';
+import LoginScreen from './screens/LoginScreen.js';
 import LeaderBoardScreen from './screens/LeaderBoardScreen';
-import SignUpScreen from './screens/SignUpScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import LogoutScreen from './screens/LogoutScreen';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Drawer = createDrawerNavigator();
+const HomeStack = createStackNavigator();
+const ProblemStack = createStackNavigator();
+const ContestStack = createStackNavigator();
+const LeaderBoardStack = createStackNavigator();
+const BlogStack = createStackNavigator();
+const LoginStack = createStackNavigator();
 
 const App = () => {
+  const [isLoggedIn, setisLoggedIn] = useState(false)
   return(
     <NavigationContainer>
-      <Drawer.Navigator 
-      initialRouteName="Home"
-      edgeWidth={500}
+      <Drawer.Navigator edgeWidth={500}
       drawerStyle={{
         BackgroundColor: '#e6e6e6',
         width: 250,
       }}
-      screenOptions={{
-        headerShown: true,
-        headerTitleAlign: 'center',
-        headerStyle:{
-          backgroundColor: '#792ba6',
-        },
-        headerTintColor:'#fff',
-        headerTitleStyle:{
-          fontSize: 25
-        }
-      }}
       >
-        <Drawer.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{
+        <Drawer.Screen name="Home" component={HomeStackScreen} 
+          options={{
           title: "JudgeMine",
           drawerIcon: ({focused})=>(
             <FontAwesome5
@@ -53,7 +42,8 @@ const App = () => {
           )
         }}
         />
-        <Drawer.Screen name="Problems" component={ProblemsScreen} 
+
+        <Drawer.Screen name="Problems" component={ProblemStackScreen} 
           options={{
           title: "Problems",
           drawerIcon: ({focused})=>(
@@ -64,8 +54,8 @@ const App = () => {
             />
           )
         }}
-        />
-        <Drawer.Screen name="Contests" component={ContestsScreen} 
+        /> 
+        <Drawer.Screen name="Contests" component={ContestStackScreen} 
           options={{
           title: "Contests",
           drawerIcon: ({focused})=>(
@@ -77,7 +67,7 @@ const App = () => {
           )
         }}
         />
-        <Drawer.Screen name="LeaderBoard" component={LeaderBoardScreen} 
+        <Drawer.Screen name="LeaderBoard" component={LeaderBoardStackScreen} 
           options={{
           title: "LeaderBoard",
           drawerIcon: ({focused})=>(
@@ -89,7 +79,7 @@ const App = () => {
           )
         }}
         />
-        <Drawer.Screen name="Blogs" component={BlogsScreen} 
+        <Drawer.Screen name="Blogs" component={BlogStackScreen} 
           options={{
           title: "Blogs",
           drawerIcon: ({focused})=>(
@@ -101,57 +91,122 @@ const App = () => {
           )
         }}
         />
-        <Drawer.Screen name="Login" component={LoginScreen} 
+        {
+          !isLoggedIn ?
+          <Drawer.Screen name="Login" component={LoginStackScreen} 
           options={{
           title: "Login",
           drawerIcon: ({focused})=>(
             <FontAwesome5
-              name="sign-in-alt"
+              name="user"
               size={ focused ? 20 : 17}
               color={focused? '#792ba6' : '#3b3b3b'}
             />
           )
         }}
         />
-        <Drawer.Screen name="SignUp" component={SignUpScreen} 
-          options={{
-          title: "SignUp",
-          drawerIcon: ({focused})=>(
-            <FontAwesome5
-              name="user-plus"
-              size={ focused ? 20 : 17}
-              color={focused? '#792ba6' : '#3b3b3b'}
-            />
-          )
-        }}
-        />
-        <Drawer.Screen name="Profile" component={ProfileScreen} 
-          options={{
-          title: "Profile",
-          drawerIcon: ({focused})=>(
-            <FontAwesome5
-              name="user-alt"
-              size={ focused ? 20 : 17}
-              color={focused? '#792ba6' : '#3b3b3b'}
-            />
-          )
-        }}
-        />
-        <Drawer.Screen name="LogOut" component={LogoutScreen} 
-          options={{
-          title: "LogOut",
-          drawerIcon: ({focused})=>(
-            <FontAwesome5
-              name="sign-out-alt"
-              size={ focused ? 20 : 17}
-              color={focused? '#792ba6' : '#3b3b3b'}
-            />
-          )
-        }}
-        />
+          : null
+        }
       </Drawer.Navigator>
     </NavigationContainer>
   )
 };
 
 export default App;
+
+
+const HomeStackScreen = ({navigation}) => (
+    <HomeStack.Navigator 
+      screenOptions={{
+        headerShown: true, headerTitleAlign: 'center', headerStyle:{ backgroundColor: '#792ba6' }, headerTintColor:'#fff', headerTitleStyle:{ fontSize: 25 }
+        }}
+        >
+      <HomeStack.Screen name="Home" component={HomeScreen} 
+      options={{
+        headerLeft: ()=>(
+          <FontAwesome5 name="bars" style={{padding:15}} size={20}  color='#fff' onPress={()=>navigation.openDrawer()} />
+        ),
+        title:'JudgeMine',
+      }} />
+    </HomeStack.Navigator>
+  );
+
+  const ProblemStackScreen = ({navigation}) => (
+    <ProblemStack.Navigator 
+      screenOptions={{
+        headerShown: true, headerTitleAlign: 'center', headerStyle:{ backgroundColor: '#792ba6' }, headerTintColor:'#fff', headerTitleStyle:{ fontSize: 25 }
+        }}
+        >
+      <ProblemStack.Screen name="Problems" component={ProblemsScreen} 
+      options={{
+        headerLeft: ()=>(
+          <FontAwesome5 name="bars" style={{padding:15}} size={20}  color='#fff' onPress={()=>navigation.openDrawer()} />
+        ),
+        title:'Problems',
+      }} />
+    </ProblemStack.Navigator>
+  );
+
+  const ContestStackScreen = ({navigation}) => (
+    <ContestStack.Navigator 
+      screenOptions={{
+        headerShown: true, headerTitleAlign: 'center', headerStyle:{ backgroundColor: '#792ba6' }, headerTintColor:'#fff', headerTitleStyle:{ fontSize: 25 }
+        }}
+        >
+      <ContestStack.Screen name="Contests" component={ContestsScreen} 
+      options={{
+        headerLeft: ()=>(
+          <FontAwesome5 name="bars" style={{padding:15}} size={20}  color='#fff' onPress={()=>navigation.openDrawer()} />
+        ),
+        title:'Contests',
+      }} />
+    </ContestStack.Navigator>
+  );
+
+  const LeaderBoardStackScreen = ({navigation}) => (
+    <LeaderBoardStack.Navigator 
+      screenOptions={{
+        headerShown: true, headerTitleAlign: 'center', headerStyle:{ backgroundColor: '#792ba6' }, headerTintColor:'#fff', headerTitleStyle:{ fontSize: 25 }
+        }}
+        >
+    <LeaderBoardStack.Screen name="Problem" component={LeaderBoardScreen} 
+      options={{
+        headerLeft: ()=>(
+          <FontAwesome5 name="bars" style={{padding:15}} size={20}  color='#fff' onPress={()=>navigation.openDrawer()} />
+        ),
+        title:'LeaderBoard',
+      }} />
+    </LeaderBoardStack.Navigator>
+  );
+
+  const BlogStackScreen = ({navigation}) => (
+    <BlogStack.Navigator 
+      screenOptions={{
+        headerShown: true, headerTitleAlign: 'center', headerStyle:{ backgroundColor: '#792ba6' }, headerTintColor:'#fff', headerTitleStyle:{ fontSize: 25 }
+        }}
+        >
+    <BlogStack.Screen name="Blogs" component={BlogsScreen} 
+      options={{
+        headerLeft: ()=>(
+          <FontAwesome5 name="bars" style={{padding:15}} size={20}  color='#fff' onPress={()=>navigation.openDrawer()} />
+        ),
+        title:'Blogs'
+      }} />
+    </BlogStack.Navigator>
+  );
+
+  const LoginStackScreen = ({navigation}) => (
+    <LoginStack.Navigator 
+      screenOptions={{
+        headerShown: true, headerTitleAlign: 'center', headerStyle:{ backgroundColor: '#792ba6' }, headerTintColor:'#fff', headerTitleStyle:{ fontSize: 25 }
+        }}
+        >
+    <LoginStack.Screen name="Login" component={LoginScreen} 
+      options={{
+        headerLeft: ()=>(
+          <FontAwesome5 name="bars" style={{padding:15}} size={20}  color='#fff' onPress={()=>navigation.openDrawer()} />
+        ),
+        title:'Login'
+      }} />
+    </LoginStack.Navigator>
+  );
