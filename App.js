@@ -9,6 +9,7 @@ import ProblemsScreen from './screens/ProblemsScreen';
 import ContestsScreen from './screens/ContestsScreen';
 import BlogsScreen from './screens/BlogsScreen.js';
 import LoginScreen from './screens/LoginScreen.js';
+import SignUpScreen from './screens/SignUpScreen.js';
 import LeaderBoardScreen from './screens/LeaderBoardScreen';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -19,6 +20,7 @@ const ContestStack = createStackNavigator();
 const LeaderBoardStack = createStackNavigator();
 const BlogStack = createStackNavigator();
 const LoginStack = createStackNavigator();
+const SignUpStack = createStackNavigator();
 
 const App = () => {
   const [isLoggedIn, setisLoggedIn] = useState(false)
@@ -93,18 +95,33 @@ const App = () => {
         />
         {
           !isLoggedIn ?
-          <Drawer.Screen name="Login" component={LoginStackScreen} 
-          options={{
-          title: "Login",
-          drawerIcon: ({focused})=>(
-            <FontAwesome5
-              name="user"
-              size={ focused ? 20 : 17}
-              color={focused? '#792ba6' : '#3b3b3b'}
-            />
-          )
-        }}
-        />
+          <>
+            <Drawer.Screen name="Login" component={LoginStackScreen} 
+            options={{
+            title: "Login",
+            drawerIcon: ({focused})=>(
+              <FontAwesome5
+                name="user"
+                size={ focused ? 20 : 17}
+                color={focused? '#792ba6' : '#3b3b3b'}
+              />
+            )
+          }}
+          />
+
+          <Drawer.Screen name="SignUp" component={SignUpStackScreen} 
+            options={{
+            title: "SignUp",
+            drawerIcon: ({focused})=>(
+              <FontAwesome5
+                name="user"
+                size={ focused ? 20 : 17}
+                color={focused? '#792ba6' : '#3b3b3b'}
+              />
+            )
+          }}
+          />
+          </>
           : null
         }
       </Drawer.Navigator>
@@ -209,4 +226,20 @@ const HomeStackScreen = ({navigation}) => (
         title:'Login'
       }} />
     </LoginStack.Navigator>
+  );
+
+  const SignUpStackScreen = ({navigation}) => (
+    <SignUpStack.Navigator 
+      screenOptions={{
+        headerShown: true, headerTitleAlign: 'center', headerStyle:{ backgroundColor: '#792ba6' }, headerTintColor:'#fff', headerTitleStyle:{ fontSize: 25 }
+        }}
+        >
+    <SignUpStack.Screen name="SignUp" component={SignUpScreen} 
+      options={{
+        headerLeft: ()=>(
+          <FontAwesome5 name="bars" style={{padding:15}} size={20}  color='#fff' onPress={()=>navigation.openDrawer()} />
+        ),
+        title:'SignUp'
+      }} />
+    </SignUpStack.Navigator>
   );
